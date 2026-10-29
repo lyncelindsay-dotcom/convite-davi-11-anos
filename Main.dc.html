@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Convite Nitro</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Rajdhani:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#07070B}
+a{color:#FF7A1A}a:hover{color:#FFA25C}
+@keyframes sl{from{transform:translateX(0)}to{transform:translateX(-260vw)}}
+@keyframes red{to{background:#FF2B2B;box-shadow:0 0 22px #FF2B2B,0 0 60px rgba(255,43,43,.5)}}
+@keyframes green{to{background:#2BFF88;box-shadow:0 0 22px #2BFF88,0 0 60px rgba(43,255,136,.5)}}
+@keyframes pop{0%{opacity:0;transform:scale(.4)}60%{opacity:1;transform:scale(1.25)}100%{opacity:1;transform:scale(1)}}
+@keyframes rise{from{opacity:0;transform:translateY(80px) skewX(-12deg);filter:blur(10px)}to{opacity:1;transform:none;filter:none}}
+@keyframes dash{from{background-position:0 0}to{background-position:0 240px}}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes flick{from{transform:scaleX(.7);opacity:.75}to{transform:scaleX(1.15);opacity:1}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes flicker{0%,19%,21%,60%,62%,100%{opacity:1}20%,61%{opacity:.35}}
+.sl{position:absolute;right:-60vw;height:2px;width:38vw;background:#FF7A1A;opacity:.55;animation:sl 1.6s linear infinite}
+.sl:nth-child(2){top:18%;animation-duration:1.1s;animation-delay:-.4s;background:#22E3FF;width:24vw}
+.sl:nth-child(3){top:31%;animation-duration:1.9s;animation-delay:-1.2s}
+.sl:nth-child(4){top:46%;animation-duration:1.3s;animation-delay:-.7s;background:#22E3FF;width:30vw}
+.sl:nth-child(5){top:63%;animation-duration:2.2s;animation-delay:-.2s;width:44vw}
+.sl:nth-child(6){top:72%;animation-duration:1.5s;animation-delay:-1.5s;background:#22E3FF}
+.sl:nth-child(7){top:84%;animation-duration:1.2s;animation-delay:-.9s;width:20vw}
+.sl:nth-child(1){top:8%}
+.lt{width:34px;height:34px;border-radius:50%;background:#2A0F12;border:3px solid #15151C;animation:red .15s ease-out forwards,green .25s ease-out 3.5s forwards}
+.lt:nth-child(1){animation-delay:.4s,3.5s}
+.lt:nth-child(2){animation-delay:1s,3.5s}
+.lt:nth-child(3){animation-delay:1.6s,3.5s}
+.lt:nth-child(4){animation-delay:2.2s,3.5s}
+.lt:nth-child(5){animation-delay:2.8s,3.5s}
+.go{opacity:0;animation:pop .5s cubic-bezier(.2,.8,.2,1) 3.6s forwards}
+.rise{animation:rise 1s cubic-bezier(.2,.8,.2,1) 3.7s both}
+.rise2{animation:rise 1s cubic-bezier(.2,.8,.2,1) 3.95s both}
+.rise3{animation:rise 1s cubic-bezier(.2,.8,.2,1) 4.2s both}
+.road{background-color:#121218;background-image:linear-gradient(#FFD23F 0 0);background-size:10px 120px;background-repeat:repeat-y;background-position:center 0;animation:dash .5s linear infinite}
+.cue{animation:bounce 1.4s ease-in-out infinite}
+.wheel{transform-box:fill-box;transform-origin:center;animation:spin .35s linear infinite}
+.flame{transform-box:fill-box;transform-origin:right center;animation:flick .09s ease-in-out infinite alternate}
+.bob{animation:bob .25s ease-in-out infinite}
+.neon{animation:flicker 4s linear infinite}
+.outline{color:transparent;-webkit-text-stroke:2px rgba(255,122,26,.35)}
+.needle{transform-box:view-box;transform-origin:130px 150px;transform:rotate(70deg)}
+.arc{stroke-dasharray:315;stroke-dashoffset:40}
+.check{background-image:repeating-conic-gradient(#F4F4F6 0 25%,#07070B 0 50%);background-size:40px 40px}
+@supports (animation-timeline: view()){
+.drive{animation:drive linear both;animation-timeline:view();animation-range:entry 0% exit 100%}
+.slide{animation:slide linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
+.rv{animation:reveal linear both;animation-timeline:view();animation-range:entry 5% cover 35%}
+.flip{animation:flip linear both;animation-timeline:view();animation-range:entry 10% cover 40%}
+.flip:nth-child(2){animation-range:entry 20% cover 48%}
+.flip:nth-child(3){animation-range:entry 30% cover 56%}
+.flip:nth-child(4){animation-range:entry 40% cover 64%}
+.needle{animation:needle linear both;animation-timeline:view();animation-range:entry 20% cover 55%}
+.arc{animation:arc linear both;animation-timeline:view();animation-range:entry 20% cover 55%}
+.zoom{animation:zoom linear both;animation-timeline:view();animation-range:entry 0% cover 50%}
+@keyframes drive{from{transform:translateX(-75vw)}to{transform:translateX(95vw)}}
+@keyframes slide{from{transform:translateX(15%)}to{transform:translateX(-45%)}}
+@keyframes reveal{from{opacity:0;transform:translateY(70px) scale(.95);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+@keyframes flip{from{opacity:0;transform:perspective(900px) rotateY(-100deg) translateZ(-60px)}to{opacity:1;transform:perspective(900px) rotateY(0)}}
+@keyframes needle{from{transform:rotate(-90deg)}to{transform:rotate(70deg)}}
+@keyframes arc{from{stroke-dashoffset:315}to{stroke-dashoffset:40}}
+@keyframes zoom{from{transform:scale(.55);opacity:0}to{transform:scale(1);opacity:1}}
+}
+@media (prefers-reduced-motion: reduce){
+*{animation:none!important}
+.lt{background:#2BFF88}
+.go{opacity:1}
+}
+</style>
+</helmet>
+<main style="font-family: 'Rajdhani', system-ui, sans-serif; color: #F4F4F6; background: #07070B; overflow-x: hidden">
+
+<section style="position: relative; min-height: 820px; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; padding: 96px 16px 260px; box-sizing: border-box; text-align: center">
+<div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none">
+<span class="sl"></span><span class="sl"></span><span class="sl"></span><span class="sl"></span><span class="sl"></span><span class="sl"></span><span class="sl"></span>
+</div>
+<div aria-hidden="true" style="position: absolute; left: 50%; bottom: -40px; width: 160%; height: 320px; transform: translateX(-50%); perspective: 420px; pointer-events: none">
+<div class="road" style="width: 100%; height: 100%; transform: rotateX(62deg); transform-origin: center bottom; border-top: 4px solid #FF7A1A"></div>
+</div>
+<div role="img" aria-label="Semáforo de largada" style="position: relative; display: flex; gap: 14px; padding: 14px 20px; background: #0E0E14; border: 2px solid #23232E; border-radius: 18px">
+<div class="lt"></div><div class="lt"></div><div class="lt"></div><div class="lt"></div><div class="lt"></div>
+</div>
+<div class="go" style="position: relative; font-family: 'Anton', sans-serif; font-size: 40px; letter-spacing: 6px; color: #2BFF88">GO!</div>
+<p class="rise" style="position: relative; margin: 0; font-size: 18px; font-weight: 700; letter-spacing: 6px; color: #22E3FF">CONVITE OFICIAL · GRID DE LARGADA</p>
+<h1 class="rise2" style="position: relative; margin: 0; font-family: 'Anton', sans-serif; font-weight: 400; font-size: clamp(72px, 13vw, 180px); line-height: .9; letter-spacing: 2px; text-transform: uppercase; font-style: italic; color: {{accent}}">Davi</h1>
+<p class="rise3" style="position: relative; margin: 0; font-family: 'Anton', sans-serif; font-size: clamp(30px, 4.6vw, 60px); line-height: 1; text-transform: uppercase; font-style: italic">acelera para os <span style="color: #22E3FF">11 anos</span></p>
+<p class="rise3" style="position: relative; margin: 8px 0 0; font-size: 22px; font-weight: 600; color: #B9BBC7">8 de novembro · [HORA] · Brasília – DF</p>
+<div class="cue" aria-hidden="true" style="position: absolute; bottom: 36px; left: 50%; margin-left: -90px; width: 180px; display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 14px; font-weight: 700; letter-spacing: 4px; color: #F4F4F6">
+<span>ROLE PARA ACELERAR</span>
+<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FF7A1A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+</div>
+</section>
+
+<section aria-label="O carro passando" style="position: relative; height: 560px; overflow: hidden; background: #0B0B11; border-top: 1px solid #1C1C26; border-bottom: 1px solid #1C1C26">
+<div class="slide outline" aria-hidden="true" style="position: absolute; top: 40px; left: 0; white-space: nowrap; font-family: 'Anton', sans-serif; font-size: 260px; line-height: 1; font-style: italic">VRUUUUUM · VRUUUUUM</div>
+<div aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 96px; height: 4px; background: #23232E"></div>
+<div class="drive" style="position: absolute; left: 0; right: 0; bottom: 82px; display: flex; justify-content: center">
+<div class="bob">
+<svg role="img" aria-label="Carro de corrida" width="520" height="170" viewBox="0 0 460 150">
+<ellipse cx="250" cy="134" rx="190" ry="8" fill="#000000" opacity=".6"></ellipse>
+<path class="flame" d="M54 106 L4 100 L54 92 Z" fill="#FF7A1A"></path>
+<path class="flame" d="M54 103 L24 99.5 L54 95 Z" fill="#FFD23F"></path>
+<path d="M54 70 L104 70 L104 77 L64 80 Z" fill="#1C1C26"></path>
+<path d="M76 78 L84 78 L86 86 L78 86 Z" fill="#1C1C26"></path>
+<path d="M58 112 L62 92 Q70 80 100 76 L170 66 Q200 40 230 34 L308 32 Q340 34 370 60 L422 70 Q444 74 448 96 L446 112 Z" fill="#FF6A00"></path>
+<path d="M190 64 Q212 44 236 40 L302 39 Q326 41 346 62 Z" fill="#0B0B12"></path>
+<path d="M246 44 L262 44 L250 60 L234 60 Z" fill="#22E3FF" opacity=".55"></path>
+<path d="M64 98 L444 98 L444 104 L62 104 Z" fill="#0B0B12"></path>
+<path d="M120 90 L400 84" stroke="#22E3FF" stroke-width="3" stroke-linecap="round"></path>
+<path d="M432 80 L448 86 L444 92 L428 88 Z" fill="#22E3FF"></path>
+<circle cx="140" cy="112" r="30" fill="#0B0B12"></circle>
+<circle cx="360" cy="112" r="30" fill="#0B0B12"></circle>
+<g class="wheel"><circle cx="140" cy="112" r="24" fill="#111116" stroke="#2E2E3A" stroke-width="5"></circle><circle cx="140" cy="112" r="11" fill="#C9CBD6"></circle><path d="M140 98 L140 126 M126 112 L154 112" stroke="#111116" stroke-width="4"></path></g>
+<g class="wheel"><circle cx="360" cy="112" r="24" fill="#111116" stroke="#2E2E3A" stroke-width="5"></circle><circle cx="360" cy="112" r="11" fill="#C9CBD6"></circle><path d="M360 98 L360 126 M346 112 L374 112" stroke="#111116" stroke-width="4"></path></g>
+<text x="276" y="88" font-family="Anton, sans-serif" font-size="22" fill="#0B0B12" font-style="italic">11</text>
+</svg>
+</div>
+</div>
+<p class="rv" style="position: absolute; left: 0; right: 0; bottom: 24px; margin: 0; text-align: center; font-size: 18px; font-weight: 700; letter-spacing: 5px; color: #B9BBC7">PREPARE O MOTOR. A FESTA VAI SER EM ALTA VELOCIDADE.</p>
+</section>
+
+<section style="padding: 120px 16px; box-sizing: border-box">
+<div style="max-width: 1120px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px">
+<div class="rv" style="display: flex; flex-direction: column; gap: 8px">
+<p style="margin: 0; font-size: 18px; font-weight: 700; letter-spacing: 6px; color: #22E3FF">FICHA DA CORRIDA</p>
+<h2 style="margin: 0; font-family: 'Anton', sans-serif; font-weight: 400; font-size: clamp(44px, 6vw, 84px); line-height: 1; font-style: italic; text-transform: uppercase">Tudo que você precisa <span style="color: #FF7A1A">pra largar</span></h2>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px">
+<article class="flip" style="display: flex; flex-direction: column; gap: 14px; padding: 28px; background: #101018; border: 2px solid #23232E; border-radius: 20px; min-height: 230px; box-sizing: border-box">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-family: 'Anton', sans-serif; font-size: 22px; color: #FF7A1A">01</span><svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#22E3FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
+<p style="margin: 0; font-size: 16px; font-weight: 700; letter-spacing: 4px; color: #B9BBC7">DATA</p>
+<p style="margin: 0; font-family: 'Anton', sans-serif; font-size: 40px; line-height: 1.05">8 de novembro</p>
+<p style="margin: 0; font-size: 18px; color: #B9BBC7">Domingo · 2026</p>
+</article>
+<article class="flip" style="display: flex; flex-direction: column; gap: 14px; padding: 28px; background: #101018; border: 2px solid #23232E; border-radius: 20px; min-height: 230px; box-sizing: border-box">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-family: 'Anton', sans-serif; font-size: 22px; color: #FF7A1A">02</span><svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#22E3FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"></circle><polyline points="12 9 12 13 15 15"></polyline><line x1="9" y1="2" x2="15" y2="2"></line></svg></div>
+<p style="margin: 0; font-size: 16px; font-weight: 700; letter-spacing: 4px; color: #B9BBC7">LARGADA</p>
+<p style="margin: 0; font-family: 'Anton', sans-serif; font-size: 40px; line-height: 1.05">[HORA]</p>
+<p style="margin: 0; font-size: 18px; color: #B9BBC7">Bandeirada final às [HORA FIM]</p>
+</article>
+<article class="flip" style="display: flex; flex-direction: column; gap: 14px; padding: 28px; background: #101018; border: 2px solid #23232E; border-radius: 20px; min-height: 230px; box-sizing: border-box">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-family: 'Anton', sans-serif; font-size: 22px; color: #FF7A1A">03</span><svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#22E3FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"></path><circle cx="12" cy="10" r="2.5"></circle></svg></div>
+<p style="margin: 0; font-size: 16px; font-weight: 700; letter-spacing: 4px; color: #B9BBC7">PISTA</p>
+<p style="margin: 0; font-family: 'Anton', sans-serif; font-size: 40px; line-height: 1.05">Condomínio Viena</p>
+<p style="margin: 0; font-size: 18px; color: #B9BBC7">Q. 113, Lote 09, Casa 7B · Parque Estrela Dalva 03 · Brasília – DF</p>
+<a href="https://www.google.com/maps/search/?api=1&amp;query=Q.113+Lote+09+Casa+7B+Condom%C3%ADnio+Viena+Parque+Estrela+Dalva+03+Bras%C3%ADlia+DF" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 17px; font-weight: 700; letter-spacing: 2px; color: #FF7A1A">ABRIR NO MAPA →</a>
+</article>
+<article class="flip" style="display: flex; flex-direction: column; gap: 14px; padding: 28px; background: #101018; border: 2px solid #23232E; border-radius: 20px; min-height: 230px; box-sizing: border-box">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-family: 'Anton', sans-serif; font-size: 22px; color: #FF7A1A">04</span><svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#22E3FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg></div>
+<p style="margin: 0; font-size: 16px; font-weight: 700; letter-spacing: 4px; color: #B9BBC7">UNIFORME</p>
+<p style="margin: 0; font-family: 'Anton', sans-serif; font-size: 40px; line-height: 1.05">Modo piloto</p>
+<p style="margin: 0; font-size: 18px; color: #B9BBC7">Boné, jaqueta ou camiseta de corrida</p>
+</article>
+</div>
+</div>
+</section>
+
+<section style="padding: 40px 16px 120px; box-sizing: border-box">
+<div style="max-width: 1120px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 64px; align-items: center">
+<div class="zoom" style="flex: 1 1 320px; display: flex; flex-direction: column; align-items: center; gap: 12px">
+<svg role="img" aria-label="Velocímetro marcando a idade" width="100%" viewBox="0 0 260 190" style="max-width: 420px">
+<path d="M30 150 A100 100 0 0 1 230 150" fill="none" stroke="#1C1C26" stroke-width="18" stroke-linecap="round"></path>
+<path class="arc" d="M30 150 A100 100 0 0 1 230 150" fill="none" stroke="#FF7A1A" stroke-width="18" stroke-linecap="round"></path>
+<line class="needle" x1="130" y1="150" x2="130" y2="66" stroke="#22E3FF" stroke-width="5" stroke-linecap="round"></line>
+<circle cx="130" cy="150" r="10" fill="#F4F4F6"></circle>
+<text x="130" y="122" text-anchor="middle" font-family="Anton, sans-serif" font-size="44" fill="#F4F4F6">11</text>
+<text x="130" y="182" text-anchor="middle" font-family="Rajdhani, sans-serif" font-weight="700" font-size="14" letter-spacing="4" fill="#B9BBC7">ANOS POR HORA</text>
+</svg>
+</div>
+<div style="flex: 999 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 28px">
+<div class="rv" style="display: flex; flex-direction: column; gap: 8px">
+<p style="margin: 0; font-size: 18px; font-weight: 700; letter-spacing: 6px; color: #22E3FF">ROTEIRO DA PROVA</p>
+<h2 style="margin: 0; font-family: 'Anton', sans-serif; font-weight: 400; font-size: clamp(40px, 5vw, 68px); line-height: 1; font-style: italic; text-transform: uppercase">Volta a volta</h2>
+</div>
+<div class="rv" style="display: flex; gap: 20px; align-items: flex-start; padding-bottom: 20px; border-bottom: 1px solid #23232E"><span style="font-family: 'Anton', sans-serif; font-size: 26px; color: #FF7A1A; min-width: 92px">[HH:MM]</span><div style="display: flex; flex-direction: column; gap: 4px"><p style="margin: 0; font-family: 'Anton', sans-serif; font-size: 28px">Aquecimento</p><p style="margin: 0; font-size: 19px; color: #B9BBC7">Chegada dos pilotos e check-in no box</p></div></div>
+<div class="rv" style="display: flex; gap: 20px; align-items: flex-start; padding-bottom: 20px; border-bottom: 1px solid #23232E"><span style="font-family: 'Anton', sans-serif; font-size: 26px; color: #FF7A1A; min-width: 92px">[HH:MM]</span><div style="display: flex; flex-direction: column; gap: 4px"><p style="margin: 0; font-family: 'Anton', sans-serif; font-size: 28px">Pista livre</p><p style="margin: 0; font-size: 19px; color: #B9BBC7">Brincadeiras e corrida de carrinhos</p></div></div>
+<div class="rv" style="display: flex; gap: 20px; align-items: flex-start; padding-bottom: 20px; border-bottom: 1px solid #23232E"><span style="font-family: 'Anton', sans-serif; font-size: 26px; color: #FF7A1A; min-width: 92px">[HH:MM]</span><div style="display: flex; flex-direction: column; gap: 4px"><p style="margin: 0; font-family: 'Anton', sans-serif; font-size: 28px">Pit stop</p><p style="margin: 0; font-size: 19px; color: #B9BBC7">Reabastecer: lanche, sucos e combustível de bolo</p></div></div>
+<div class="rv" style="display: flex; gap: 20px; align-items: flex-start"><span style="font-family: 'Anton', sans-serif; font-size: 26px; color: #FF7A1A; min-width: 92px">[HH:MM]</span><div style="display: flex; flex-direction: column; gap: 4px"><p style="margin: 0; font-family: 'Anton', sans-serif; font-size: 28px">Pódio</p><p style="margin: 0; font-size: 19px; color: #B9BBC7">Parabéns, velas e troféu para todos os pilotos</p></div></div>
+</div>
+</div>
+</section>
+
+<section style="padding: 40px 16px 120px; box-sizing: border-box">
+<div style="max-width: 1120px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px">
+<div class="rv" style="display: flex; flex-direction: column; gap: 8px">
+<p style="margin: 0; font-size: 18px; font-weight: 700; letter-spacing: 6px; color: #22E3FF">SUGESTÃO DE PRESENTE</p>
+<h2 style="margin: 0; font-family: 'Anton', sans-serif; font-weight: 400; font-size: clamp(44px, 6vw, 84px); line-height: 1; font-style: italic; text-transform: uppercase">Peças pro <span style="color: #FF7A1A">a garagem do piloto</span></h2>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px">
+<article class="flip" style="display: flex; flex-direction: column; gap: 14px; padding: 28px; background: #101018; border: 2px solid #23232E; border-radius: 20px; min-height: 200px; box-sizing: border-box">
+<svg aria-hidden="true" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#22E3FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 6l2 4 2-1v12h8V9l2 1 2-4-4-3c0 2-2 3-4 3S8 5 8 3z"></path></svg>
+<p style="margin: 0; font-size: 16px; font-weight: 700; letter-spacing: 4px; color: #B9BBC7">ROUPA</p>
+<p style="margin: 0; font-family: 'Anton', sans-serif; font-size: 40px; line-height: 1.05">Tam. 14 ou 16</p>
+</article>
+<article class="flip" style="display: flex; flex-direction: column; gap: 14px; padding: 28px; background: #101018; border: 2px solid #23232E; border-radius: 20px; min-height: 200px; box-sizing: border-box">
+<svg aria-hidden="true" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#22E3FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16v3h18v-2c0-1.5-1-2.5-2.5-3L13 12l-2-5H6L5 10H3z"></path><line x1="3" y1="16" x2="21" y2="16"></line></svg>
+<p style="margin: 0; font-size: 16px; font-weight: 700; letter-spacing: 4px; color: #B9BBC7">CALÇADO</p>
+<p style="margin: 0; font-family: 'Anton', sans-serif; font-size: 40px; line-height: 1.05">Nº 37 ou 38</p>
+</article>
+<article class="flip" style="display: flex; flex-direction: column; gap: 14px; padding: 28px; background: #101018; border: 2px solid #23232E; border-radius: 20px; min-height: 200px; box-sizing: border-box">
+<svg aria-hidden="true" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#22E3FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"></path><path d="M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3"></path><line x1="7" y1="15" x2="17" y2="15"></line></svg>
+<p style="margin: 0; font-size: 16px; font-weight: 700; letter-spacing: 4px; color: #B9BBC7">BRINQUEDOS</p>
+<p style="margin: 0; font-family: 'Anton', sans-serif; font-size: 40px; line-height: 1.05">Educativos</p>
+</article>
+</div>
+</div>
+</section>
+
+<section id="rsvp" style="padding: 120px 16px; box-sizing: border-box; background: #0B0B11; border-top: 1px solid #1C1C26">
+<div class="rv" style="max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center">
+<p class="neon" style="margin: 0; font-size: 18px; font-weight: 700; letter-spacing: 6px; color: #22E3FF">VAGAS LIMITADAS NO GRID</p>
+<h2 style="margin: 0; font-family: 'Anton', sans-serif; font-weight: 400; font-size: clamp(44px, 7vw, 96px); line-height: .95; font-style: italic; text-transform: uppercase">Garanta seu lugar <span style="color: #FF7A1A">na largada</span></h2>
+<p style="margin: 0; font-size: 21px; color: #B9BBC7">Confirme até [DATA LIMITE] com [NOME DO RESPONSÁVEL] pelo [CONTACTO].</p>
+<sc-if value="{{notConfirmed}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{toggle}}" style="min-height: 64px; padding: 0 40px; border: 0; border-radius: 999px; background: {{accent}}; color: #07070B; font-family: 'Anton', sans-serif; font-size: 24px; letter-spacing: 2px; cursor: pointer">LIGAR O MOTOR · CONFIRMAR</button>
+</sc-if>
+<sc-if value="{{confirmed}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 12px">
+<p style="margin: 0; font-family: 'Anton', sans-serif; font-size: 40px; color: #2BFF88">MOTOR LIGADO!</p>
+<p style="margin: 0; font-size: 20px; color: #F4F4F6">Te esperamos na pista. Traga energia — e fome de bolo.</p>
+<button type="button" onClick="{{toggle}}" style="min-height: 44px; padding: 0 20px; border: 2px solid #23232E; border-radius: 999px; background: transparent; color: #B9BBC7; font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 16px; cursor: pointer">Desfazer</button>
+</div>
+</sc-if>
+</div>
+</section>
+
+<footer style="display: flex; flex-direction: column">
+<div class="check" aria-hidden="true" style="height: 80px"></div>
+<div style="padding: 40px 16px 56px; text-align: center; display: flex; flex-direction: column; gap: 6px">
+<p style="margin: 0; font-family: 'Anton', sans-serif; font-size: 30px; font-style: italic">Davi · 11 ANOS</p>
+<p style="margin: 0; font-size: 17px; color: #B9BBC7">Bandeira quadriculada no Condomínio Viena, Brasília – DF · 8 de novembro</p>
+</div>
+</footer>
+
+</main>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#FF7A1A","options":["#FF7A1A","#22E3FF","#FFD23F","#FF2B6A"]},"$preview":{"width":1280,"height":4600}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { confirmed: false };
+  }
+  renderVals() {
+    const confirmed = !!this.state.confirmed;
+    return {
+      accent: this.props.accent ?? '#FF7A1A',
+      confirmed: confirmed,
+      notConfirmed: !confirmed,
+      toggle: () => this.setState({ confirmed: !this.state.confirmed })
+    };
+  }
+}
+</script>
+</body>
+</html>

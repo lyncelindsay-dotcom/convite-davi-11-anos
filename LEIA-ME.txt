@@ -1,0 +1,7 @@
+Convite do Davi - 11 anos (tema corrida)
+
+index.html  -> o convite completo. Dê dois cliques para abrir no navegador (Chrome ou Edge para as animações de scroll).
+Main.dc.html e canvas.json -> código-fonte da versão no editor de design do Claude (não abrem sozinhos no navegador).
+
+Ainda a preencher: horário [HORA], [HORA FIM], [HH:MM] do roteiro, prazo e contacto de confirmação.
+Para publicar online: suba o index.html em Netlify Drop, GitHub Pages ou Vercel.
