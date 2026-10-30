@@ -459,16 +459,38 @@ footer p{color:var(--muted)}
       bgVideo.muted=!on;
       if(on){ bgVideo.volume=1; var pr=bgVideo.play(); if(pr) pr.catch(function(){}); }
     }
-    if(on){ try{ ac = ac || new (window.AudioContext||window.webkitAudioContext)(); if(ac.state==='suspended') ac.resume(); }catch(e){} }
+    if(on) unlockAudio();
+  }
+  /* "player invisível": cria o motor de áudio e toca um som mudo dentro do próprio toque,
+     que é o que o iPhone e o Android exigem para liberar o som da página */
+  function unlockAudio(){
+    try{
+      ac = ac || new (window.AudioContext||window.webkitAudioContext)();
+      var b=ac.createBuffer(1,1,22050), src=ac.createBufferSource();
+      src.buffer=b; src.connect(ac.destination); src.start(0);
+      if(ac.state!=='running' && ac.resume) ac.resume();
+    }catch(e){}
   }
   /* Os navegadores só deixam tocar som depois do primeiro toque: liga no primeiro gesto do convidado */
+  /* Liga o som sozinho no primeiro toque na tela (não no scroll).
+     Usa os eventos que os navegadores aceitam como "toque de verdade" e só desiste
+     de escutar depois que o som foi mesmo liberado. */
+  var GESTURES=['pointerup','touchend','click','keydown'], replayed=false;
+  function stopListening(){ GESTURES.forEach(function(t){ removeEventListener(t,firstGesture,true); }); }
   function firstGesture(e){
-    if(e && e.target && e.target.closest && e.target.closest('#sound')) return;
-    if(!userChoseOff && !soundOn){ applySound(true); if(!(e && e.target && e.target.closest && e.target.closest('#ignition'))) setTimeout(function(){ if(window.__replayLargada) window.__replayLargada(); },250); }
-    ['pointerdown','touchstart','keydown','click'].forEach(function(t){ removeEventListener(t,firstGesture,true); });
+    if(userChoseOff){ stopListening(); return; }
+    var onSoundBtn = e && e.target && e.target.closest && e.target.closest('#sound');
+    if(onSoundBtn) return;
+    if(!soundOn) applySound(true); else unlockAudio();
+    if(!replayed && !(e && e.target && e.target.closest && e.target.closest('#ignition'))){
+      replayed=true;
+      setTimeout(function(){ if(window.__replayLargada) window.__replayLargada(); },120);
+    }
+    if(ac && ac.state==='running') stopListening();
+    else if(ac && ac.resume){ ac.resume().then(function(){ if(ac.state==='running') stopListening(); }).catch(function(){}); }
   }
-  ['pointerdown','touchstart','keydown','click'].forEach(function(t){ addEventListener(t,firstGesture,{capture:true,passive:true}); });
-  sbtn.addEventListener('click',function(){ userChoseOff=soundOn; applySound(!soundOn); });
+  GESTURES.forEach(function(t){ addEventListener(t,firstGesture,{capture:true,passive:true}); });
+  sbtn.addEventListener('click',function(){ userChoseOff=soundOn; applySound(!soundOn); if(soundOn && !replayed){ replayed=true; setTimeout(function(){ if(window.__replayLargada) window.__replayLargada(); },120); } });
   /* tenta já começar com som (funciona quando o navegador permite) */
   if(bgVideo){
     bgVideo.muted=false;
@@ -557,7 +579,7 @@ footer p{color:var(--muted)}
   },{passive:true});
 
   /* ---- Efeitos sonoros (sintetizados, sem arquivos) ---- */
-  function audioReady(){ return soundOn && ac && ac.state==='running'; }
+  function audioReady(){ return soundOn && ac && ac.state!=='closed'; }
   function zapSound(power){
     if(!audioReady()) return;
     try{
