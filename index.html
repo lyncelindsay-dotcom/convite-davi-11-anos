@@ -55,8 +55,14 @@ button{font:inherit;cursor:pointer}
 /* ---------- Som ---------- */
 .sound{position:fixed;z-index:30;top:calc(12px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));min-height:44px;padding:0 14px;border-radius:6px;border:1px solid rgba(212,222,231,.3);background:rgba(8,13,22,.9);color:#EDF1F5;font-weight:600;font-size:13px;letter-spacing:.04em;display:flex;align-items:center;gap:8px}
 .sound svg{width:20px;height:20px}
-.sound.is-off{border-color:#FF9D45;animation:soundPulse 1.6s ease-in-out infinite}
-@keyframes soundPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,157,69,.55)}50%{box-shadow:0 0 0 8px rgba(255,157,69,0)}}
+.sound.is-off{border-color:rgba(255,157,69,.55);color:#FFF4E2;animation:soundPulse 1.6s ease-in-out infinite}
+@keyframes soundPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,157,69,.55),0 0 14px rgba(255,157,69,.25)}50%{box-shadow:0 0 0 8px rgba(255,157,69,0),0 0 22px rgba(255,157,69,.45)}}
+/* faísca que dá a volta ao botão enquanto o som está desligado (cabeça + rasto) */
+.sound.is-off::before,.sound.is-off::after{content:"";position:absolute;border-radius:50%;pointer-events:none;animation:sparkRun 1.6s linear infinite}
+.sound.is-off::after{width:9px;height:9px;margin:-4.5px 0 0 -4.5px;background:radial-gradient(circle,#FFFFFF 0 32%,#FFD27A 48%,rgba(255,138,0,0) 74%);box-shadow:0 0 10px 3px rgba(255,170,60,.9),0 0 18px 6px rgba(255,120,0,.35);animation:sparkRun 1.6s linear infinite,sparkFlicker .14s steps(2) infinite}
+.sound.is-off::before{width:6px;height:6px;margin:-3px 0 0 -3px;background:#FFB24A;box-shadow:0 0 8px 2px rgba(255,138,0,.7);opacity:.7;animation-delay:-1.48s}
+@keyframes sparkRun{0%{left:0;top:0}38.5%{left:100%;top:0}50%{left:100%;top:100%}88.5%{left:0;top:100%}100%{left:0;top:0}}
+@keyframes sparkFlicker{50%{opacity:.65}}
 
 /* ---------- Hero ---------- */
 .hero{position:relative;overflow:hidden;padding-block:82px 42px;text-align:center;background:transparent;color:#EFF2F6}
