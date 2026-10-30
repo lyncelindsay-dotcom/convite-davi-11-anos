@@ -4,6 +4,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Convite do Davi</title>
+<meta name="description" content="Domingo, 08/11, às 14h · Condomínio Viena, Brasília – DF. Toque para ver o convite do Davi e confirmar presença.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Convite do Davi">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:url" content="https://convite-davi-11-anos.pages.dev/">
+<meta property="og:title" content="Davi faz 11 anos e você está convidado!">
+<meta property="og:description" content="Domingo, 08/11, às 14h · Condomínio Viena, Brasília – DF. Toque para ver o convite e confirmar presença.">
+<meta property="og:image" content="https://convite-davi-11-anos.pages.dev/og-banner.jpg">
+<meta property="og:image:secure_url" content="https://convite-davi-11-anos.pages.dev/og-banner.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Convite do Davi, 11 anos: domingo 08/11 às 14h em Brasília">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Davi faz 11 anos e você está convidado!">
+<meta name="twitter:description" content="Domingo, 08/11, às 14h · Brasília – DF. Toque para ver o convite.">
+<meta name="twitter:image" content="https://convite-davi-11-anos.pages.dev/og-banner.jpg">
+<meta name="theme-color" content="#0A0F1E">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -178,6 +196,10 @@ footer h2{font-size:28px;color:var(--yellow)}
 footer p{color:var(--muted)}
 
 #confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:40}
+#zapFlash{position:fixed;inset:0;pointer-events:none;z-index:39;background:radial-gradient(circle at var(--zx,50%) var(--zy,50%),rgba(170,235,255,.38),rgba(120,160,255,.10) 35%,transparent 65%);opacity:0;transition:opacity .25s ease-out}
+#zapFlash.on{opacity:1;transition:none}
+.hero-ignition{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.hero-ignition:focus-visible{outline:2px solid #FF9D45;outline-offset:6px;border-radius:8px}
 
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
@@ -226,10 +248,11 @@ footer p{color:var(--muted)}
 
 <button class="sound is-off" id="sound" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M19 5a10 10 0 0 1 0 14"></path></svg><span id="soundTxt">Ligar o som</span></button>
 <canvas id="confetti" aria-hidden="true"></canvas>
+<div id="zapFlash" aria-hidden="true"></div>
 
 <header class="hero">
   <div class="wrap hero-in">
-    <div class="hero-ignition">
+    <div class="hero-ignition" id="ignition" role="button" tabindex="0" aria-label="Dar a largada no sinal">
       <div class="lights" id="lights" role="img" aria-label="Semáforo de largada"><span></span><span></span><span></span><span></span><span></span></div>
       <p class="go" id="go" role="status">Prepare os motores</p>
     </div>
@@ -415,8 +438,6 @@ footer p{color:var(--muted)}
     b.innerHTML = carSVG(b.dataset.c1, b.dataset.c2);
     b.addEventListener('click', function(e){
       boost(b);
-      var r=b.getBoundingClientRect();
-      burst(r.left+r.width*0.1, r.top+r.height*0.6, 40, 'left');
     });
   });
   function boost(b){
@@ -443,7 +464,7 @@ footer p{color:var(--muted)}
   /* Os navegadores só deixam tocar som depois do primeiro toque: liga no primeiro gesto do convidado */
   function firstGesture(e){
     if(e && e.target && e.target.closest && e.target.closest('#sound')) return;
-    if(!userChoseOff && !soundOn) applySound(true);
+    if(!userChoseOff && !soundOn){ applySound(true); if(!(e && e.target && e.target.closest && e.target.closest('#ignition'))) setTimeout(function(){ if(window.__replayLargada) window.__replayLargada(); },250); }
     ['pointerdown','touchstart','keydown','click'].forEach(function(t){ removeEventListener(t,firstGesture,true); });
   }
   ['pointerdown','touchstart','keydown','click'].forEach(function(t){ addEventListener(t,firstGesture,{capture:true,passive:true}); });
@@ -471,29 +492,114 @@ footer p{color:var(--muted)}
     }catch(e){}
   }
 
-  /* ---- Confete ---- */
-  var cv=document.getElementById('confetti'), cx=cv.getContext('2d'), parts=[], running=false;
-  var COLORS=['#FF9D45','#E4B784','#66D4EC','#85AEE4','#D9E3EB','#F0F3F7'];
+  /* ---- Raios elétricos (substituem o confete) ---- */
+  var cv=document.getElementById('confetti'), cx=cv.getContext('2d'), bolts=[], sparks=[], running=false;
+  var flash=document.getElementById('zapFlash');
+  var BOLT=['#BFF4FF','#66D4EC','#9DB8FF','#FFFFFF','#FFD45A'];
   function size(){var d=window.devicePixelRatio||1;cv.width=innerWidth*d;cv.height=innerHeight*d;cx.setTransform(d,0,0,d,0,0);}
   size(); addEventListener('resize',size);
-  function burst(x,y,n,dir){
-    if(reduce) return;
-    for(var i=0;i<n;i++){
-      var a = dir==='left' ? Math.PI + (Math.random()-.5)*1.2 : dir==='up' ? -Math.PI/2+(Math.random()-.5)*1.6 : Math.random()*Math.PI*2;
-      var s=4+Math.random()*9;
-      parts.push({x:x,y:y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,w:6+Math.random()*8,h:4+Math.random()*6,r:Math.random()*6,vr:(Math.random()-.5)*.4,c:COLORS[i%COLORS.length],life:120+Math.random()*60});
+  function makeBolt(x,y,ang,len,width,depth){
+    var pts=[[x,y]], steps=8+Math.floor(Math.random()*5), seg=len/steps, cx0=x, cy0=y, a=ang;
+    for(var i=0;i<steps;i++){
+      a=ang+(Math.random()-.5)*1.1;
+      cx0+=Math.cos(a)*seg; cy0+=Math.sin(a)*seg; pts.push([cx0,cy0]);
+      if(depth<2 && Math.random()<.22) makeBolt(cx0,cy0,a+(Math.random()<.5?-1:1)*(.5+Math.random()*.6),len*(.35+Math.random()*.25),width*.55,depth+1);
     }
+    bolts.push({pts:pts,w:width,c:BOLT[Math.floor(Math.random()*BOLT.length)],life:10+Math.floor(Math.random()*8),max:18});
+  }
+  function zap(x,y,power){
+    if(reduce) return;
+    power=power||1;
+    var n=Math.round(5+3*power), base=Math.random()*Math.PI*2;
+    for(var i=0;i<n;i++){ makeBolt(x,y,base+i*(Math.PI*2/n)+(Math.random()-.5)*.5,(70+Math.random()*120)*power,2.4+Math.random()*1.6,0); }
+    for(var k=0;k<Math.round(26*power);k++){ var a=Math.random()*Math.PI*2, sp=3+Math.random()*9; sparks.push({x:x,y:y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:18+Math.random()*16}); }
+    if(flash){ flash.style.setProperty('--zx',x+'px'); flash.style.setProperty('--zy',y+'px'); flash.classList.add('on'); requestAnimationFrame(function(){requestAnimationFrame(function(){flash.classList.remove('on')})}); }
+    zapSound(power);
     if(!running){running=true;requestAnimationFrame(tick);}
   }
-  function rain(){ for(var i=0;i<6;i++){ setTimeout(function(){ burst(Math.random()*innerWidth, -10, 30, 'down'); }, i*120);} }
+  function burst(x,y,n){ zap(x,y,Math.min(1.6,(n||30)/30)); }
+  function rain(){ for(var i=0;i<6;i++){ setTimeout(function(){ zap(Math.random()*innerWidth, Math.random()*innerHeight*.6, 1.3); }, i*140);} }
   function tick(){
     cx.clearRect(0,0,innerWidth,innerHeight);
-    parts=parts.filter(function(p){return p.life>0 && p.y<innerHeight+40;});
-    parts.forEach(function(p){
-      p.vy+=.22; p.vx*=.985; p.x+=p.vx; p.y+=p.vy; p.r+=p.vr; p.life--;
-      cx.save(); cx.translate(p.x,p.y); cx.rotate(p.r); cx.fillStyle=p.c; cx.fillRect(-p.w/2,-p.h/2,p.w,p.h); cx.restore();
+    cx.lineCap='round'; cx.lineJoin='round';
+    bolts=bolts.filter(function(b){return b.life>0});
+    bolts.forEach(function(b){
+      var flick=(b.life%3===0)?.35:1, al=Math.min(1,b.life/b.max*1.6)*flick;
+      cx.globalAlpha=al; cx.shadowBlur=18; cx.shadowColor=b.c; cx.strokeStyle=b.c; cx.lineWidth=b.w;
+      cx.beginPath(); cx.moveTo(b.pts[0][0],b.pts[0][1]); for(var i=1;i<b.pts.length;i++) cx.lineTo(b.pts[i][0],b.pts[i][1]); cx.stroke();
+      cx.shadowBlur=0; cx.strokeStyle='#FFFFFF'; cx.lineWidth=Math.max(.8,b.w*.35); cx.stroke();
+      b.life--;
     });
-    if(parts.length) requestAnimationFrame(tick); else {running=false; cx.clearRect(0,0,innerWidth,innerHeight);}
+    sparks=sparks.filter(function(p){return p.life>0});
+    sparks.forEach(function(p){
+      p.vx*=.9; p.vy=p.vy*.9+.25; p.x+=p.vx; p.y+=p.vy; p.life--;
+      cx.globalAlpha=Math.min(1,p.life/14); cx.fillStyle=p.life%2?'#FFFFFF':'#66D4EC';
+      cx.beginPath(); cx.arc(p.x,p.y,1.6+Math.random()*1.4,0,Math.PI*2); cx.fill();
+    });
+    cx.globalAlpha=1;
+    if(bolts.length||sparks.length) requestAnimationFrame(tick); else {running=false; cx.clearRect(0,0,innerWidth,innerHeight);}
+  }
+  /* raio em todo botão ou link tocado */
+  addEventListener('pointerdown',function(e){
+    var t=e.target && e.target.closest && e.target.closest('button,a,.hero-ignition');
+    if(!t) return;
+    zap(e.clientX,e.clientY, t.classList.contains('car')?1.4:1);
+  },{passive:true});
+
+  /* ---- Efeitos sonoros (sintetizados, sem arquivos) ---- */
+  function audioReady(){ return soundOn && ac && ac.state==='running'; }
+  function zapSound(power){
+    if(!audioReady()) return;
+    try{
+      var t=ac.currentTime, len=Math.floor(ac.sampleRate*.35), buf=ac.createBuffer(1,len,ac.sampleRate), d=buf.getChannelData(0);
+      for(var i=0;i<len;i++){ var env=Math.pow(1-i/len,3); d[i]=(Math.random()*2-1)*env*(Math.random()<.12?1:.35); }
+      var src=ac.createBufferSource(); src.buffer=buf;
+      var bp=ac.createBiquadFilter(); bp.type='bandpass'; bp.frequency.setValueAtTime(3200,t); bp.frequency.exponentialRampToValueAtTime(700,t+.3); bp.Q.value=.8;
+      var g=ac.createGain(); g.gain.value=.32*Math.min(1.4,power||1);
+      src.connect(bp); bp.connect(g); g.connect(ac.destination); src.start(t);
+      var o=ac.createOscillator(), og=ac.createGain(); o.type='square';
+      o.frequency.setValueAtTime(1800,t); o.frequency.exponentialRampToValueAtTime(120,t+.18);
+      og.gain.setValueAtTime(.06,t); og.gain.exponentialRampToValueAtTime(.0001,t+.2);
+      o.connect(og); og.connect(ac.destination); o.start(t); o.stop(t+.22);
+    }catch(e){}
+  }
+  function beep(freq,dur,vol){
+    if(!audioReady()) return;
+    try{
+      var t=ac.currentTime, o=ac.createOscillator(), g=ac.createGain();
+      o.type='square'; o.frequency.value=freq;
+      g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(vol||.12,t+.01); g.gain.setValueAtTime(vol||.12,t+dur-.04); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+      o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t+dur+.02);
+    }catch(e){}
+  }
+  /* motores em ponto morto que vão subindo de giro a cada luz */
+  var engine=null;
+  function engineStart(){
+    if(!audioReady() || engine) return;
+    try{
+      var t=ac.currentTime, out=ac.createGain(), lp=ac.createBiquadFilter();
+      lp.type='lowpass'; lp.frequency.value=520; lp.Q.value=3;
+      out.gain.setValueAtTime(.0001,t); out.gain.exponentialRampToValueAtTime(.16,t+.4);
+      var lfo=ac.createOscillator(), lg=ac.createGain(); lfo.frequency.value=11; lg.gain.value=.06; lfo.connect(lg); lg.connect(out.gain);
+      var o1=ac.createOscillator(), o2=ac.createOscillator();
+      o1.type='sawtooth'; o2.type='sawtooth'; o1.frequency.value=42; o2.frequency.value=43.6;
+      o1.connect(lp); o2.connect(lp); lp.connect(out); out.connect(ac.destination);
+      o1.start(t); o2.start(t); lfo.start(t);
+      engine={o1:o1,o2:o2,lfo:lfo,lp:lp,out:out};
+    }catch(e){ engine=null; }
+  }
+  function engineRev(level){
+    if(!engine || !ac) return;
+    var t=ac.currentTime, f=42+level*16, k=engine;
+    [k.o1,k.o2].forEach(function(o,i){ o.frequency.cancelScheduledValues(t); o.frequency.setValueAtTime(o.frequency.value,t); o.frequency.linearRampToValueAtTime(f*1.9*(i?1.04:1),t+.12); o.frequency.exponentialRampToValueAtTime(f*(i?1.04:1),t+.38); });
+    k.lp.frequency.setTargetAtTime(520+level*160,t,.1);
+    k.lfo.frequency.setTargetAtTime(11+level*3,t,.1);
+  }
+  function engineStop(){
+    if(!engine || !ac) return;
+    var k=engine, t=ac.currentTime; engine=null;
+    try{ k.out.gain.cancelScheduledValues(t); k.out.gain.setValueAtTime(k.out.gain.value||.16,t); k.out.gain.exponentialRampToValueAtTime(.0001,t+.5);
+      [k.o1,k.o2,k.lfo].forEach(function(o){o.stop(t+.55)}); }catch(e){}
   }
 
   /* ---- Largada (semáforo) ---- */
@@ -505,13 +611,23 @@ footer p{color:var(--muted)}
     lights.classList.remove('green'); spans.forEach(function(s){s.classList.remove('on')});
     go.classList.remove('show');
     if(reduce){lights.classList.add('green');go.classList.add('show');go.textContent='Largada liberada';return;}
-    spans.forEach(function(s,i){ timers.push(setTimeout(function(){ s.classList.add('on'); }, 350+i*450)); });
+    engineStop(); timers.push(setTimeout(engineStart,150));
+    go.textContent='Prepare os motores';
+    spans.forEach(function(s,i){ timers.push(setTimeout(function(){ s.classList.add('on'); beep(640,.2,.11); engineRev(i+1); }, 350+i*700)); });
     timers.push(setTimeout(function(){
       lights.classList.add('green'); void go.offsetWidth; go.classList.add('show');
       go.textContent='Largada liberada';
-    }, 350+5*450+300));
+      beep(1280,.55,.14); engineStop(); vroom();
+      var r=lights.getBoundingClientRect(); zap(r.left+r.width/2, r.top+r.height/2, 1.6);
+    }, 350+5*700+500));
   }
   start();
+  var ign=document.getElementById('ignition');
+  if(ign){
+    ign.addEventListener('click',function(){ if(!soundOn && !userChoseOff) applySound(true); start(); });
+    ign.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); if(!soundOn && !userChoseOff) applySound(true); start(); } });
+  }
+  window.__replayLargada=function(){ var h=document.querySelector('.hero'); if(h && h.getBoundingClientRect().bottom>80) start(); };
 
   /* ---- Contagem regressiva (8/11/2026, horário de Brasília) ---- */
   var target=Date.UTC(2026,10,8,17,0,0);
@@ -586,7 +702,6 @@ footer p{color:var(--muted)}
   document.querySelectorAll('.gift').forEach(function(g){
     g.addEventListener('click',function(){
       g.classList.remove('jump'); void g.offsetWidth; g.classList.add('jump');
-      var r=g.getBoundingClientRect(); burst(r.left+r.width/2, r.top+20, 24, 'up');
     });
   });
 
