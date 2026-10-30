@@ -4,24 +4,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Convite do Davi</title>
-<meta name="description" content="Domingo, 08/11, às 14h · Condomínio Viena, Brasília – DF. Toque para ver o convite do Davi e confirmar presença.">
+<meta name="description" content="Domingo, 08/11, às 14h · Condomínio Viena, Cidade Ocidental – GO. Toque para ver o convite do Davi e confirmar presença.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Convite do Davi">
 <meta property="og:locale" content="pt_BR">
-<meta property="og:url" content="https://convite-davi-11-anos.pages.dev/">
 <meta property="og:title" content="Davi faz 11 anos e você está convidado!">
-<meta property="og:description" content="Domingo, 08/11, às 14h · Condomínio Viena, Brasília – DF. Toque para ver o convite e confirmar presença.">
-<meta property="og:image" content="https://convite-davi-11-anos.pages.dev/og-banner.jpg">
-<meta property="og:image:secure_url" content="https://convite-davi-11-anos.pages.dev/og-banner.jpg">
+<meta property="og:description" content="Domingo, 08/11, às 14h · Condomínio Viena, Cidade Ocidental – GO. Toque para ver o convite e confirmar presença.">
+<meta property="og:image" content="https://convite-davi-11-anos.pages.dev/og-banner.jpg?v=3">
+<meta property="og:image:secure_url" content="https://convite-davi-11-anos.pages.dev/og-banner.jpg?v=3">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Convite do Davi, 11 anos: domingo 08/11 às 14h em Brasília">
+<meta property="og:image:alt" content="Convite do Davi, 11 anos: domingo 08/11 às 14h em Cidade Ocidental – GO">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Davi faz 11 anos e você está convidado!">
-<meta name="twitter:description" content="Domingo, 08/11, às 14h · Brasília – DF. Toque para ver o convite.">
-<meta name="twitter:image" content="https://convite-davi-11-anos.pages.dev/og-banner.jpg">
+<meta name="twitter:description" content="Domingo, 08/11, às 14h · Cidade Ocidental – GO. Toque para ver o convite.">
+<meta name="twitter:image" content="https://convite-davi-11-anos.pages.dev/og-banner.jpg?v=3">
 <meta name="theme-color" content="#0A0F1E">
+<link rel="image_src" href="https://convite-davi-11-anos.pages.dev/og-banner.jpg?v=3">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -94,6 +94,10 @@ button{font:inherit;cursor:pointer}
 .edition-title{font-family:'Oswald','Arial Narrow',sans-serif;font-weight:500;font-size:34px;line-height:1.08;letter-spacing:.035em;color:#F0F3F7;text-shadow:0 3px 9px #000}
 .edition-title span{color:#E8BD8F}
 .hero-invite{margin-top:25px;color:#D6DEE8;font-size:17px;font-weight:500;letter-spacing:.035em;text-shadow:0 2px 7px #000}
+.hero-story{max-width:34rem;margin-top:26px;display:flex;flex-direction:column;gap:12px;text-align:center;text-wrap:balance}
+.hero-story-lead{color:#EEF2F7;font-size:21px;line-height:1.4;font-weight:600;letter-spacing:.01em;text-shadow:0 2px 8px #000}
+.hero-story-lead strong{color:#E8BD8F;font-weight:700}
+.hero-story-invite{font-family:'Oswald','Arial Narrow',sans-serif;font-weight:500;font-size:22px;line-height:1.25;letter-spacing:.03em;color:#FFB25C;text-shadow:0 2px 10px rgba(0,0,0,.9),0 0 18px rgba(255,138,0,.25)}
 .event-strip{display:flex;align-items:center;justify-content:center;gap:28px;width:min(100%,440px);margin-top:26px;padding:18px 8px;border-block:1px solid rgba(197,211,224,.28);background:linear-gradient(90deg,transparent,rgba(7,12,20,.48),transparent);text-align:left}
 .event-date{display:flex;flex-direction:column;gap:3px}
 .event-date b{font-family:'Oswald',sans-serif;font-size:31px;line-height:1;font-weight:500;letter-spacing:.07em;color:#F3F6F9}
@@ -227,6 +231,9 @@ footer p{color:var(--muted)}
   .edition-title{font-size:29px}
   .edition-label{font-size:10px;letter-spacing:.3em}
   .hero-invite{font-size:15px;margin-top:23px}
+  .hero-story{margin-top:22px;gap:10px}
+  .hero-story-lead{font-size:17.5px}
+  .hero-story-invite{font-size:19px}
   .event-strip{gap:19px;padding:16px 0;margin-top:22px}
   .event-date b{font-size:28px}
   .event-date>span{font-size:9px}
@@ -272,11 +279,14 @@ footer p{color:var(--muted)}
         <p class="edition-title">EM ALTA<br><span>ROTAÇÃO.</span></p>
       </div>
     </div>
-    <p class="hero-invite">Você faz parte dessa equipe.</p>
+    <div class="hero-story">
+      <p class="hero-story-lead">Cada aniversário é uma nova aventura, e o Davi está prestes a viver uma das mais especiais: <strong>seus 11 anos!</strong> 🏎️🏁</p>
+      <p class="hero-story-invite">E essa história fica ainda melhor com você fazendo parte dela!</p>
+    </div>
     <div class="event-strip">
       <time class="event-date" datetime="2026-11-08T14:00:00-03:00"><b>08<span>/</span>11</b><span>DOMINGO · 2026 · ÀS 14H</span></time>
       <span class="event-divider" aria-hidden="true"></span>
-      <p class="event-place"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><span><strong>BRASÍLIA — DF</strong><small>Condomínio Viena</small></span></p>
+      <p class="event-place"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><span><strong>CIDADE OCIDENTAL — GO</strong><small>Condomínio Viena</small></span></p>
     </div>
     <a class="hero-scroll" href="#contagem">VEJA OS DETALHES<svg viewBox="0 0 20 20" fill="none" stroke-width="1.5" aria-hidden="true"><path d="M10 2v15M4 11l6 6 6-6"/></svg></a>
   </div>
@@ -331,12 +341,8 @@ footer p{color:var(--muted)}
       <article class="card card--location flip" style="animation-delay:.24s">
         <div class="badge b-p"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"></path><circle cx="12" cy="10" r="2.5"></circle></svg></div>
         <p class="lbl">Pista</p><p class="val">Condomínio Viena</p>
-        <p class="sub">Q. 113, Lote 09, Casa 7B · Parque Estrela Dalva 03 · Brasília – DF</p>
-        <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Q.113+Lote+09+Casa+7B+Condom%C3%ADnio+Viena+Parque+Estrela+Dalva+03+Bras%C3%ADlia+DF" target="_blank" rel="noopener">Abrir no mapa →</a>
-      </article>
-      <article class="card card--uniform flip" style="animation-delay:.36s">
-        <div class="badge b-y"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg></div>
-        <p class="lbl">Uniforme</p><p class="val">Modo piloto</p><p class="sub">Boné, jaqueta ou camiseta de corrida</p>
+        <p class="sub">Q. 113, Lote 09, Casa 7B · Parque Estrela Dalva 03 · Cidade Ocidental – GO</p>
+        <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=Q.113+Lote+09+Casa+7B+Condom%C3%ADnio+Viena+Parque+Estrela+Dalva+03+Cidade+Ocidental+GO" target="_blank" rel="noopener">Abrir no mapa →</a>
       </article>
     </div>
   </div>
@@ -404,7 +410,7 @@ footer p{color:var(--muted)}
   <div class="check" aria-hidden="true"></div>
   <div class="wrap">
     <h2>Davi <span>· 11 anos</span></h2>
-    <p>Bandeira quadriculada no Condomínio Viena · Brasília – DF · 8 de novembro, às 14h</p>
+    <p>Bandeira quadriculada no Condomínio Viena · Cidade Ocidental – GO · 8 de novembro, às 14h</p>
   </div>
 </footer>
 
