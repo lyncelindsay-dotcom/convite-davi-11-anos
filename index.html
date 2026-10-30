@@ -94,10 +94,19 @@ button{font:inherit;cursor:pointer}
 .edition-title{font-family:'Oswald','Arial Narrow',sans-serif;font-weight:500;font-size:34px;line-height:1.08;letter-spacing:.035em;color:#F0F3F7;text-shadow:0 3px 9px #000}
 .edition-title span{color:#E8BD8F}
 .hero-invite{margin-top:25px;color:#D6DEE8;font-size:17px;font-weight:500;letter-spacing:.035em;text-shadow:0 2px 7px #000}
-.hero-story{max-width:34rem;margin-top:26px;display:flex;flex-direction:column;gap:12px;text-align:center;text-wrap:balance}
-.hero-story-lead{color:#EEF2F7;font-size:21px;line-height:1.4;font-weight:600;letter-spacing:.01em;text-shadow:0 2px 8px #000}
+.hero-story-lead{max-width:32rem;margin-top:22px;color:#EEF2F7;font-size:20px;line-height:1.45;font-weight:600;letter-spacing:.01em;text-align:center;text-wrap:balance;text-shadow:0 2px 8px #000}
 .hero-story-lead strong{color:#E8BD8F;font-weight:700}
-.hero-story-invite{font-family:'Oswald','Arial Narrow',sans-serif;font-weight:500;font-size:22px;line-height:1.25;letter-spacing:.03em;color:#FFB25C;text-shadow:0 2px 10px rgba(0,0,0,.9),0 0 18px rgba(255,138,0,.25)}
+.mini-car{display:inline-block;width:auto;height:1.55em;margin:-.3em 0 -.25em .35em;vertical-align:middle;filter:drop-shadow(0 3px 4px rgba(0,0,0,.7));animation:miniCarIn 1s cubic-bezier(.2,1.1,.3,1) 1.4s both,miniCarIdle .35s ease-in-out 2.4s infinite alternate}
+@keyframes miniCarIn{from{opacity:0;transform:translateX(-60px)}to{opacity:1;transform:none}}
+@keyframes miniCarIdle{to{transform:translateY(-1px)}}
+/* brilho metálico que passa por dentro das letras do nome */
+.wordmark-shine{position:absolute;inset:0;z-index:3;pointer-events:none;
+  -webkit-mask:url(./wordmark-davi-metal.png) center/100% 100% no-repeat;mask:url(./wordmark-davi-metal.png) center/100% 100% no-repeat;
+  background:linear-gradient(105deg,transparent 0 40%,rgba(255,255,255,.85) 47%,#FFF6DF 50%,rgba(255,214,150,.75) 53%,transparent 60% 100%) no-repeat;
+  background-size:250% 100%;background-position:120% 0;mix-blend-mode:screen;
+  animation:nameShine 4.2s ease-in-out 1.6s infinite}
+@keyframes nameShine{0%{background-position:120% 0}45%,100%{background-position:-20% 0}}
+.hero-story-invite{max-width:30rem;margin-top:24px;text-align:center;text-wrap:balance;font-family:'Oswald','Arial Narrow',sans-serif;font-weight:500;font-size:22px;line-height:1.25;letter-spacing:.03em;color:#FFB25C;text-shadow:0 2px 10px rgba(0,0,0,.9),0 0 18px rgba(255,138,0,.25)}
 .event-strip{display:flex;align-items:center;justify-content:center;gap:28px;width:min(100%,440px);margin-top:26px;padding:18px 8px;border-block:1px solid rgba(197,211,224,.28);background:linear-gradient(90deg,transparent,rgba(7,12,20,.48),transparent);text-align:left}
 .event-date{display:flex;flex-direction:column;gap:3px}
 .event-date b{font-family:'Oswald',sans-serif;font-size:31px;line-height:1;font-weight:500;letter-spacing:.07em;color:#F3F6F9}
@@ -231,9 +240,8 @@ footer p{color:var(--muted)}
   .edition-title{font-size:29px}
   .edition-label{font-size:10px;letter-spacing:.3em}
   .hero-invite{font-size:15px;margin-top:23px}
-  .hero-story{margin-top:22px;gap:10px}
-  .hero-story-lead{font-size:17.5px}
-  .hero-story-invite{font-size:19px}
+  .hero-story-lead{font-size:17px;margin-top:18px}
+  .hero-story-invite{font-size:19px;margin-top:20px}
   .event-strip{gap:19px;padding:16px 0;margin-top:22px}
   .event-date b{font-size:28px}
   .event-date>span{font-size:9px}
@@ -271,7 +279,8 @@ footer p{color:var(--muted)}
       <p class="go" id="go" role="status">Prepare os motores</p>
     </div>
     <p class="hero-kicker">Você está convidado · Edição especial</p>
-    <h1 class="wordmark-wrap"><img class="hero-wordmark" src="./wordmark-davi-metal.png" width="1983" height="793" alt="Davi"></h1>
+    <p class="hero-story-lead">Cada aniversário é uma nova aventura, e o Davi está prestes a viver uma das mais especiais: <strong>seus 11 anos!</strong><img class="mini-car" src="./carro-vermelho-realista.png" width="1774" height="887" alt=""></p>
+    <h1 class="wordmark-wrap"><img class="hero-wordmark" src="./wordmark-davi-metal.png" width="1983" height="793" alt="Davi"><span class="wordmark-shine" aria-hidden="true"></span></h1>
     <div class="hero-edition">
       <span class="edition-number">11</span>
       <div class="edition-copy">
@@ -279,14 +288,11 @@ footer p{color:var(--muted)}
         <p class="edition-title">EM ALTA<br><span>ROTAÇÃO.</span></p>
       </div>
     </div>
-    <div class="hero-story">
-      <p class="hero-story-lead">Cada aniversário é uma nova aventura, e o Davi está prestes a viver uma das mais especiais: <strong>seus 11 anos!</strong> 🏎️🏁</p>
-      <p class="hero-story-invite">E essa história fica ainda melhor com você fazendo parte dela!</p>
-    </div>
+    <p class="hero-story-invite">E essa história fica ainda melhor com você fazendo parte dela!</p>
     <div class="event-strip">
       <time class="event-date" datetime="2026-11-08T14:00:00-03:00"><b>08<span>/</span>11</b><span>DOMINGO · 2026 · ÀS 14H</span></time>
       <span class="event-divider" aria-hidden="true"></span>
-      <p class="event-place"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><span><strong>CIDADE OCIDENTAL — GO</strong><small>Condomínio Viena</small></span></p>
+      <p class="event-place"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><span><strong>CIDADE OCIDENTAL</strong><small>Goiás · Condomínio Viena</small></span></p>
     </div>
     <a class="hero-scroll" href="#contagem">VEJA OS DETALHES<svg viewBox="0 0 20 20" fill="none" stroke-width="1.5" aria-hidden="true"><path d="M10 2v15M4 11l6 6 6-6"/></svg></a>
   </div>
