@@ -246,7 +246,7 @@ footer p{color:var(--muted)}
 <source src="./1029-web.mp4" type="video/mp4">
 </video>
 
-<button class="sound is-off" id="sound" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M19 5a10 10 0 0 1 0 14"></path></svg><span id="soundTxt">Ligar o som</span></button>
+<button class="sound is-off" id="sound" type="button" aria-pressed="false" aria-label="Toque na tela para ligar o som"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M19 5a10 10 0 0 1 0 14"></path></svg><span id="soundTxt">Toque na tela</span></button>
 <canvas id="confetti" aria-hidden="true"></canvas>
 <div id="zapFlash" aria-hidden="true"></div>
 
@@ -453,7 +453,8 @@ footer p{color:var(--muted)}
   function setSoundUI(on){
     sbtn.setAttribute('aria-pressed',on);
     sbtn.classList.toggle('is-off',!on);
-    stxt.textContent=on?'Som ligado':'Ligar o som';
+    stxt.textContent=on?'Desligar o som':'Toque na tela';
+    sbtn.setAttribute('aria-label',on?'Desligar o som':'Toque na tela para ligar o som');
   }
   /* "player invisível": cria o motor de áudio e toca um som mudo dentro do próprio toque,
      que é o que o iPhone e o Android exigem para liberar o som da página */
