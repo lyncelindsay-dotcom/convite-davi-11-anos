@@ -450,16 +450,10 @@ footer p{color:var(--muted)}
   var soundOn=false, ac=null, userChoseOff=false;
   var sbtn=document.getElementById('sound'), stxt=document.getElementById('soundTxt');
   var bgVideo=document.getElementById('pageVideo');
-  function applySound(on){
-    soundOn=on;
+  function setSoundUI(on){
     sbtn.setAttribute('aria-pressed',on);
     sbtn.classList.toggle('is-off',!on);
     stxt.textContent=on?'Som ligado':'Ligar o som';
-    if(bgVideo){
-      bgVideo.muted=!on;
-      if(on){ bgVideo.volume=1; var pr=bgVideo.play(); if(pr) pr.catch(function(){}); }
-    }
-    if(on) unlockAudio();
   }
   /* "player invisível": cria o motor de áudio e toca um som mudo dentro do próprio toque,
      que é o que o iPhone e o Android exigem para liberar o som da página */
@@ -468,34 +462,70 @@ footer p{color:var(--muted)}
       ac = ac || new (window.AudioContext||window.webkitAudioContext)();
       var b=ac.createBuffer(1,1,22050), src=ac.createBufferSource();
       src.buffer=b; src.connect(ac.destination); src.start(0);
-      if(ac.state!=='running' && ac.resume) ac.resume();
+      if(ac.state!=='running' && ac.resume) return ac.resume();
     }catch(e){}
+    return Promise.resolve();
   }
-  /* Os navegadores só deixam tocar som depois do primeiro toque: liga no primeiro gesto do convidado */
-  /* Liga o som sozinho no primeiro toque na tela (não no scroll).
-     Usa os eventos que os navegadores aceitam como "toque de verdade" e só desiste
-     de escutar depois que o som foi mesmo liberado. */
-  var GESTURES=['pointerup','touchend','click','keydown'], replayed=false;
+  /* Liga o som de verdade e só mostra "Som ligado" depois de confirmar que tocou.
+     Se o navegador recusar, o vídeo continua a passar sem som e o botão volta a "Ligar o som". */
+  function applySound(on){
+    if(!on){
+      soundOn=false; setSoundUI(false);
+      if(bgVideo){ bgVideo.muted=true; var pm=bgVideo.play(); if(pm) pm.catch(function(){}); }
+      return Promise.resolve(false);
+    }
+    soundOn=true;
+    var audioP=unlockAudio().then(function(){ return !!(ac && ac.state==='running'); }).catch(function(){ return false; });
+    var videoP=Promise.resolve(false);
+    if(bgVideo){
+      bgVideo.muted=false; bgVideo.volume=1;
+      var pr=bgVideo.play();
+      videoP = pr && pr.then ? pr.then(function(){ return !bgVideo.muted && !bgVideo.paused; }).catch(function(){
+        /* recusado: volta a passar o vídeo sem som para ele não ficar parado */
+        bgVideo.muted=true; var p2=bgVideo.play(); if(p2) p2.catch(function(){}); return false;
+      }) : Promise.resolve(!bgVideo.paused);
+    }
+    return Promise.all([audioP,videoP]).then(function(r){
+      var ok=r[0]||r[1];
+      soundOn=ok; setSoundUI(ok);
+      return ok;
+    });
+  }
+  /* Liga o som sozinho no primeiro toque na tela.
+     Só conta um toque de verdade (o navegador marca como "ativação do utilizador");
+     deslizar a página não conta, por isso é ignorado sem mexer no botão. */
+  var GESTURES=['click','pointerup','keydown'], replayed=false, unlocking=false;
   function stopListening(){ GESTURES.forEach(function(t){ removeEventListener(t,firstGesture,true); }); }
+  function isRealTap(){ var ua=navigator.userActivation; return ua ? ua.isActive : true; }
   function firstGesture(e){
     if(userChoseOff){ stopListening(); return; }
-    var onSoundBtn = e && e.target && e.target.closest && e.target.closest('#sound');
-    if(onSoundBtn) return;
-    if(!soundOn) applySound(true); else unlockAudio();
-    if(!replayed && !(e && e.target && e.target.closest && e.target.closest('#ignition'))){
-      replayed=true;
-      setTimeout(function(){ if(window.__replayLargada) window.__replayLargada(); },120);
-    }
-    if(ac && ac.state==='running') stopListening();
-    else if(ac && ac.resume){ ac.resume().then(function(){ if(ac.state==='running') stopListening(); }).catch(function(){}); }
+    if(e && e.target && e.target.closest && e.target.closest('#sound')) return;
+    if(unlocking || !isRealTap()) return;
+    unlocking=true;
+    applySound(true).then(function(ok){
+      unlocking=false;
+      if(!ok) return;
+      stopListening();
+      if(!replayed && !(e && e.target && e.target.closest && e.target.closest('#ignition'))){
+        replayed=true;
+        if(window.__replayLargada) window.__replayLargada();
+      }
+    });
   }
   GESTURES.forEach(function(t){ addEventListener(t,firstGesture,{capture:true,passive:true}); });
-  sbtn.addEventListener('click',function(){ userChoseOff=soundOn; applySound(!soundOn); if(soundOn && !replayed){ replayed=true; setTimeout(function(){ if(window.__replayLargada) window.__replayLargada(); },120); } });
-  /* tenta já começar com som (funciona quando o navegador permite) */
+  sbtn.addEventListener('click',function(){
+    if(soundOn){ userChoseOff=true; applySound(false); return; }
+    userChoseOff=false;
+    applySound(true).then(function(ok){ if(ok){ stopListening(); if(!replayed){ replayed=true; if(window.__replayLargada) window.__replayLargada(); } } });
+  });
+  /* No computador o navegador às vezes já deixa tocar com som: tenta, e se não der fica sem som à espera do toque */
   if(bgVideo){
     bgVideo.muted=false;
     var tryPlay=bgVideo.play();
-    if(tryPlay && tryPlay.then){ tryPlay.then(function(){ applySound(true); }).catch(function(){ bgVideo.muted=true; var p2=bgVideo.play(); if(p2) p2.catch(function(){}); }); }
+    if(tryPlay && tryPlay.then){
+      tryPlay.then(function(){ if(!bgVideo.muted){ soundOn=true; setSoundUI(true); } })
+      .catch(function(){ bgVideo.muted=true; var p2=bgVideo.play(); if(p2) p2.catch(function(){}); });
+    }
   }
   function vroom(){
     if(!soundOn) return;
