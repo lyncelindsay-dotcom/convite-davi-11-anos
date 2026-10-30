@@ -37,6 +37,8 @@ button{font:inherit;cursor:pointer}
 /* ---------- Som ---------- */
 .sound{position:fixed;z-index:30;top:calc(12px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));min-height:44px;padding:0 14px;border-radius:6px;border:1px solid rgba(212,222,231,.3);background:rgba(8,13,22,.9);color:#EDF1F5;font-weight:600;font-size:13px;letter-spacing:.04em;display:flex;align-items:center;gap:8px}
 .sound svg{width:20px;height:20px}
+.sound.is-off{border-color:#FF9D45;animation:soundPulse 1.6s ease-in-out infinite}
+@keyframes soundPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,157,69,.55)}50%{box-shadow:0 0 0 8px rgba(255,157,69,0)}}
 
 /* ---------- Hero ---------- */
 .hero{position:relative;overflow:hidden;padding-block:82px 42px;text-align:center;background:transparent;color:#EFF2F6}
@@ -218,11 +220,11 @@ footer p{color:var(--muted)}
 </head>
 <body>
 
-<video class="page-video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
+<video class="page-video" id="pageVideo" autoplay muted loop playsinline preload="auto" aria-hidden="true">
 <source src="./1029-web.mp4" type="video/mp4">
 </video>
 
-<button class="sound" id="sound" type="button" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M19 5a10 10 0 0 1 0 14"></path></svg><span id="soundTxt">Som ligado</span></button>
+<button class="sound is-off" id="sound" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M19 5a10 10 0 0 1 0 14"></path></svg><span id="soundTxt">Ligar o som</span></button>
 <canvas id="confetti" aria-hidden="true"></canvas>
 
 <header class="hero">
@@ -346,7 +348,11 @@ footer p{color:var(--muted)}
         <span class="badge b-o"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 16v3h18v-2c0-1.5-1-2.5-2.5-3L13 12l-2-5H6L5 10H3z"></path><line x1="3" y1="16" x2="21" y2="16"></line></svg></span>
         <span class="lbl">Calçado</span><span class="val">Nº 37 ou 38</span>
       </button>
-      <button type="button" class="card gift flip" style="text-align:left;color:inherit;font:inherit;animation-delay:.24s">
+      <button type="button" class="card gift flip" style="text-align:left;color:inherit;font:inherit;animation-delay:.18s">
+        <span class="badge b-y"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2 8l10 5 10-5-10-5z"></path><path d="M6 10.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-5.5"></path><line x1="22" y1="8" x2="22" y2="14"></line></svg></span>
+        <span class="lbl">Brinquedos educativos</span><span class="val">Acima de 11 anos</span>
+      </button>
+      <button type="button" class="card gift flip" style="text-align:left;color:inherit;font:inherit;animation-delay:.3s">
         <span class="badge b-p"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6"></path><path d="M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3"></path><line x1="7" y1="15" x2="17" y2="15"></line></svg></span>
         <span class="lbl">Tema favorito</span><span class="val">Velozes e Furiosos</span>
       </button>
@@ -420,9 +426,34 @@ footer p{color:var(--muted)}
   }
 
   /* ---- Som do motor (sintetizado) ---- */
-  var soundOn=true, ac=null;
+  var soundOn=false, ac=null, userChoseOff=false;
   var sbtn=document.getElementById('sound'), stxt=document.getElementById('soundTxt');
-  sbtn.addEventListener('click',function(){soundOn=!soundOn;sbtn.setAttribute('aria-pressed',soundOn);stxt.textContent=soundOn?'Som ligado':'Som desligado';});
+  var bgVideo=document.getElementById('pageVideo');
+  function applySound(on){
+    soundOn=on;
+    sbtn.setAttribute('aria-pressed',on);
+    sbtn.classList.toggle('is-off',!on);
+    stxt.textContent=on?'Som ligado':'Ligar o som';
+    if(bgVideo){
+      bgVideo.muted=!on;
+      if(on){ bgVideo.volume=1; var pr=bgVideo.play(); if(pr) pr.catch(function(){}); }
+    }
+    if(on){ try{ ac = ac || new (window.AudioContext||window.webkitAudioContext)(); if(ac.state==='suspended') ac.resume(); }catch(e){} }
+  }
+  /* Os navegadores só deixam tocar som depois do primeiro toque: liga no primeiro gesto do convidado */
+  function firstGesture(e){
+    if(e && e.target && e.target.closest && e.target.closest('#sound')) return;
+    if(!userChoseOff && !soundOn) applySound(true);
+    ['pointerdown','touchstart','keydown','click'].forEach(function(t){ removeEventListener(t,firstGesture,true); });
+  }
+  ['pointerdown','touchstart','keydown','click'].forEach(function(t){ addEventListener(t,firstGesture,{capture:true,passive:true}); });
+  sbtn.addEventListener('click',function(){ userChoseOff=soundOn; applySound(!soundOn); });
+  /* tenta já começar com som (funciona quando o navegador permite) */
+  if(bgVideo){
+    bgVideo.muted=false;
+    var tryPlay=bgVideo.play();
+    if(tryPlay && tryPlay.then){ tryPlay.then(function(){ applySound(true); }).catch(function(){ bgVideo.muted=true; var p2=bgVideo.play(); if(p2) p2.catch(function(){}); }); }
+  }
   function vroom(){
     if(!soundOn) return;
     try{
